@@ -12,7 +12,9 @@ class _RegisterState extends State<Register> {
   // Method
 
   Widget nameForm() {
-    return Container(child: TextField());
+    return Container(padding: EdgeInsets.only(left: 30.0,right: 30.0),
+      child: TextField(),
+    );
   }
 
   Widget cameraButton() {
