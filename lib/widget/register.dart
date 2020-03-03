@@ -1,5 +1,9 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:guangglo/utility/my_style.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -7,13 +11,72 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  // Widget
+  // Field
+
+  File file;
 
   // Method
 
   Widget nameForm() {
-    return Container(padding: EdgeInsets.only(left: 30.0,right: 30.0),
-      child: TextField(),
+    Color color = Colors.purple;
+    return Container(
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      child: TextField(
+        decoration: InputDecoration(
+            enabledBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: color)),
+            icon: Icon(
+              Icons.face,
+              size: 36.0,
+              color: color,
+            ),
+            helperText: 'Type Your Name in Blank',
+            helperStyle: TextStyle(color: color),
+            labelText: 'Display Name :',
+            labelStyle: TextStyle(color: color)),
+      ),
+    );
+  }
+
+  Widget emailForm() {
+    Color color = Colors.green;
+    return Container(
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      child: TextField(
+        decoration: InputDecoration(
+            enabledBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: color)),
+            icon: Icon(
+              Icons.email,
+              size: 36.0,
+              color: color,
+            ),
+            helperText: 'Type Your eMail in Blank',
+            helperStyle: TextStyle(color: color),
+            labelText: 'Email :',
+            labelStyle: TextStyle(color: color)),
+      ),
+    );
+  }
+
+  Widget passwordForm() {
+    Color color = Colors.red;
+    return Container(
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      child: TextField(
+        decoration: InputDecoration(
+            enabledBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: color)),
+            icon: Icon(
+              Icons.lock,
+              size: 36.0,
+              color: color,
+            ),
+            helperText: 'Type Your Password in Blank',
+            helperStyle: TextStyle(color: color),
+            labelText: 'Password :',
+            labelStyle: TextStyle(color: color)),
+      ),
     );
   }
 
@@ -24,8 +87,27 @@ class _RegisterState extends State<Register> {
         size: 36.0,
         color: MyStyle().darkColor,
       ),
-      onPressed: () {},
+      onPressed: () {
+        chooseImageThread(ImageSource.camera);
+      },
     );
+  }
+
+  Future<Void> chooseImageThread(ImageSource imageSource) async {
+    try {
+      var object = await ImagePicker.pickImage(
+        source: imageSource,
+        maxWidth: 800.0,
+        maxHeight: 800.0,
+      );
+      
+      setState(() {
+        file = object;
+      });
+    }
+     catch  (e) {
+       
+     }
   }
 
   Widget galleryButton() {
@@ -35,7 +117,9 @@ class _RegisterState extends State<Register> {
         size: 36.0,
         color: MyStyle().primaryColor,
       ),
-      onPressed: () {},
+      onPressed: () {
+        chooseImageThread(ImageSource.gallery);
+      },
     );
   }
 
@@ -48,7 +132,7 @@ class _RegisterState extends State<Register> {
 
   Widget showAvartar() {
     return Container(
-      child: Image.asset('images/avartar.png'),
+      child: file == null  ? Image.asset('images/avartar.png') : Image.file(file)  ,
       height: MediaQuery.of(context).size.height * 0.5,
       width: MediaQuery.of(context).size.width,
     );
@@ -75,6 +159,8 @@ class _RegisterState extends State<Register> {
           showAvartar(),
           ShowButton(),
           nameForm(),
+          emailForm(),
+          passwordForm(),
         ],
       ),
     );
