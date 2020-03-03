@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:guangglo/utility/my_style.dart';
+import 'package:guangglo/widget/register.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -25,7 +26,11 @@ class _AuthenState extends State<Authen> {
           'Sign Up',
           style: TextStyle(color: MyStyle().darkColor),
         ),
-        onPressed: () {},
+        onPressed: () {
+          print('You Click SignUp');
+          MaterialPageRoute route = MaterialPageRoute(builder: (BuildContext buildContext){return Register();});
+          Navigator.of(context).push(route);
+        },
       ),
     );
   }
@@ -104,7 +109,8 @@ class _AuthenState extends State<Authen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            colors: <Color>[Colors.white, MyStyle().primaryColor],radius: 1.0,
+            colors: <Color>[Colors.white, MyStyle().primaryColor],
+            radius: 1.0,
           ),
         ),
         child: Center(
