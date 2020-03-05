@@ -28,7 +28,10 @@ class _AuthenState extends State<Authen> {
         ),
         onPressed: () {
           print('You Click SignUp');
-          MaterialPageRoute route = MaterialPageRoute(builder: (BuildContext buildContext){return Register();});
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (BuildContext buildContext) {
+            return Register();
+          });
           Navigator.of(context).push(route);
         },
       ),
