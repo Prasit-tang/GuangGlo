@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown
     ]);
     return MaterialApp(
+      
       debugShowCheckedModeBanner: false,
       home: Authen(),
     );
