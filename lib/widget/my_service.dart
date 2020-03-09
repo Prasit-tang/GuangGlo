@@ -10,8 +10,44 @@ class MyService extends StatefulWidget {
 
 class _MyServiceState extends State<MyService> {
   // Field
+  String nameLogin, emailLogin, urlAvatarLogin;
 
   // Method
+
+  @override
+  void initState() {
+    super.initState();
+    findUser();
+  }
+
+  Future<void> findUser() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseUser firebaseUser = await auth.currentUser();
+    setState(() {
+      nameLogin = firebaseUser.displayName;
+      emailLogin = firebaseUser.email;
+      urlAvatarLogin = firebaseUser.photoUrl;
+    });
+  }
+
+  Widget showAvatar() {
+    return urlAvatarLogin == null
+        ? Image.network(MyStyle().urlAvatar)
+        : showNetworkAvatar();
+  }
+
+  Widget showNetworkAvatar() {
+    return ClipOval(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(urlAvatarLogin),
+            fit: BoxFit.cover
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget menuSignOut() {
     return ListTile(
@@ -38,9 +74,40 @@ class _MyServiceState extends State<MyService> {
 
   Widget showHead() {
     return UserAccountsDrawerHeader(
-      accountName: Text('Name Login'),
-      accountEmail: Text('Email Login'),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/wall.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      accountName: showName(),
+      accountEmail: showEmail(),
+      currentAccountPicture: showAvatar(),
     );
+  }
+
+  Text showEmail() {
+    return emailLogin == null
+        ? Text(
+            'Email Login',
+            style: TextStyle(color: MyStyle().darkColor),
+          )
+        : Text(
+            '$emailLogin Login',
+            style: TextStyle(color: MyStyle().darkColor),
+          );
+  }
+
+  Text showName() {
+    return nameLogin == null
+        ? Text(
+            'Name Login',
+            style: TextStyle(color: MyStyle().darkColor),
+          )
+        : Text(
+            '$nameLogin Login',
+            style: TextStyle(color: Colors.blue),
+          );
   }
 
   Widget showDrawer() {
