@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:guangglo/container/show_list_product.dart';
+import 'package:guangglo/container/show_map.dart';
 import 'package:guangglo/utility/my_style.dart';
 import 'package:guangglo/widget/authen.dart';
 
@@ -11,6 +13,7 @@ class MyService extends StatefulWidget {
 class _MyServiceState extends State<MyService> {
   // Field
   String nameLogin, emailLogin, urlAvatarLogin;
+  Widget currentWidget = ShowListProduct();
 
   // Method
 
@@ -30,6 +33,41 @@ class _MyServiceState extends State<MyService> {
     });
   }
 
+  Widget menuListProduct() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          currentWidget = ShowListProduct();
+        });
+        Navigator.of(context).pop();
+      },
+      subtitle: Text('Show List Product From JSON'),
+      title: Text('List Product'),
+      leading: Icon(
+        Icons.home,
+        size: 36.0,
+        color: Colors.green.shade800,
+      ),
+    );
+  }
+
+  Widget menuMap() {
+    return ListTile(
+      onTap: () {setState(() {
+        currentWidget=ShowMap();
+      });
+        Navigator.of(context).pop();
+      },
+      subtitle: Text('Show Map and Get Location'),
+      title: Text('Show Map'),
+      leading: Icon(
+        Icons.map,
+        size: 36.0,
+        color: Colors.purple.shade800,
+      ),
+    );
+  }
+
   Widget showAvatar() {
     return urlAvatarLogin == null
         ? Image.network(MyStyle().urlAvatar)
@@ -41,9 +79,7 @@ class _MyServiceState extends State<MyService> {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(urlAvatarLogin),
-            fit: BoxFit.cover
-          ),
+              image: NetworkImage(urlAvatarLogin), fit: BoxFit.cover),
         ),
       ),
     );
@@ -115,6 +151,8 @@ class _MyServiceState extends State<MyService> {
       child: ListView(
         children: <Widget>[
           showHead(),
+          menuListProduct(),
+          menuMap(),
           menuSignOut(),
         ],
       ),
@@ -123,7 +161,7 @@ class _MyServiceState extends State<MyService> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(body: currentWidget,
       drawer: showDrawer(),
       appBar: AppBar(
         title: Text('My Service'),
