@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:guangglo/models/product_model.dart';
 import 'package:guangglo/utility/my_style.dart';
+import 'package:guangglo/widget/detail.dart';
 
 class ShowListProduct extends StatefulWidget {
   @override
@@ -25,14 +26,14 @@ class _ShowListProductState extends State<ShowListProduct> {
     setupController();
   }
 
-  void setupController(){
-    scrollController.addListener((){
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+  void setupController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         print('This is End of ListView');
         setState(() {
-          sizeListView +=10;
+          sizeListView += 10;
         });
-        
       }
     });
   }
@@ -62,11 +63,21 @@ class _ShowListProductState extends State<ShowListProduct> {
         controller: scrollController,
         itemCount: sizeListView,
         itemBuilder: (BuildContext buildContext, int index) {
-          return Row(
-            children: <Widget>[
-              showPic(index),
-              showText(index),
-            ],
+          return GestureDetector(
+            onTap: () {
+              MaterialPageRoute route = MaterialPageRoute(
+                builder: (value) => Detail(
+                  model: productModels[index],
+                ),
+              );
+              Navigator.of(context).push(route);
+            },
+            child: Row(
+              children: <Widget>[
+                showPic(index),
+                showText(index),
+              ],
+            ),
           );
         });
   }
